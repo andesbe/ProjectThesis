@@ -68,7 +68,7 @@ plot(n,
      fill = 'lightblue')
 
 # Prediction
-output <- compute(n, training)
+output <- predict(n, training)
 validation <- predict(n, testing)
 
 results <- validation
@@ -104,18 +104,35 @@ var13 <- variables$Pt*(max(data$Pt)-min(data$Pt))+min(data$Pt)
 #Finding the MSE of the different variables
 #First I must descale the validation set, luckily it was scaled with the same 
 
-cont1 <- testing$x1*(max(data$x1)-min(data$x1))+min(data$x1)
-cont2 <- testing$x2*(max(data$x2)-min(data$x2))+min(data$x2)
-cont3 <- testing$x3*(max(data$x3)-min(data$x3))+min(data$x3)
-cont4 <- testing$x4*(max(data$x4)-min(data$x4))+min(data$x4)
-cont5 <- testing$x5*(max(data$x5)-min(data$x5))+min(data$x5)
-cont6 <- testing$x6*(max(data$x6)-min(data$x6))+min(data$x6)
-cont7 <- testing$x7*(max(data$x7)-min(data$x7))+min(data$x7)
-cont8 <- testing$x8*(max(data$x8)-min(data$x8))+min(data$x8)
-cont9 <- testing$x9*(max(data$x9)-min(data$x9))+min(data$x9)
-cont10 <- testing$y1*(max(data$y1)-min(data$y1))+min(data$y1)
-cont11 <- testing$y2*(max(data$y2)-min(data$y2))+min(data$y2)
-cont12 <- testing$y3*(max(data$y3)-min(data$y3))+min(data$y3)
-cont13 <- testing$Pt*(max(data$Pt)-min(data$Pt))+min(data$Pt)
+cont1 <- testing[,1]*(max(data$x1)-min(data$x1))+min(data$x1)
+cont2 <- testing[,2]*(max(data$x2)-min(data$x2))+min(data$x2)
+cont3 <- testing[,3]*(max(data$x3)-min(data$x3))+min(data$x3)
+cont4 <- testing[,4]*(max(data$x4)-min(data$x4))+min(data$x4)
+cont5 <- testing[,5]*(max(data$x5)-min(data$x5))+min(data$x5)
+cont6 <- testing[,6]*(max(data$x6)-min(data$x6))+min(data$x6)
+cont7 <- testing[,7]*(max(data$x7)-min(data$x7))+min(data$x7)
+cont8 <- testing[,8]*(max(data$x8)-min(data$x8))+min(data$x8)
+cont9 <- testing[,9]*(max(data$x9)-min(data$x9))+min(data$x9)
+cont10 <- testing[,10]*(max(data$y1)-min(data$y1))+min(data$y1)
+cont11 <- testing[,11]*(max(data$y2)-min(data$y2))+min(data$y2)
+cont12 <- testing[,12]*(max(data$y3)-min(data$y3))+min(data$y3)
+cont13 <- testing[,13]*(max(data$Pt)-min(data$Pt))+min(data$Pt)
 
 mse1 <- mean((as.vector(cont1) -as.vector(var1))^2)
+mse2 <- mean((as.vector(cont2) -as.vector(var2))^2)
+mse3 <- mean((as.vector(cont3) -as.vector(var3))^2)
+mse4 <- mean((as.vector(cont4) -as.vector(var4))^2)
+mse5 <- mean((as.vector(cont5) -as.vector(var5))^2)
+mse6 <- mean((as.vector(cont6) -as.vector(var6))^2)
+mse7 <- mean((as.vector(cont7) -as.vector(var7))^2)
+mse8 <- mean((as.vector(cont8) -as.vector(var8))^2)
+mse9 <- mean((as.vector(cont9) -as.vector(var9))^2)
+mse10 <- mean((as.vector(cont10) -as.vector(var10))^2)
+mse11 <- mean((as.vector(cont11) -as.vector(var11))^2)
+mse12 <- mean((as.vector(cont12) -as.vector(var12))^2)
+mse13 <- mean((as.vector(cont13) -as.vector(var13))^2)
+
+MSE <- cbind(c(mse1, mse2, mse3, mse4, mse5, mse6, mse7, mse8, mse9, mse10, mse11, mse12, mse13))
+MSE
+
+     

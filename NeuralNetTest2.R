@@ -118,5 +118,4 @@ cont11 <- testing$y2*(max(data$y2)-min(data$y2))+min(data$y2)
 cont12 <- testing$y3*(max(data$y3)-min(data$y3))+min(data$y3)
 cont13 <- testing$Pt*(max(data$Pt)-min(data$Pt))+min(data$Pt)
 
-mean((cont1 -var1)^2)
-
+mse1 <- mean((as.vector(cont1) -as.vector(var1))^2)

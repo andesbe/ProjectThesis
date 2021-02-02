@@ -2,30 +2,37 @@
 input <- read.csv(file="input.csv")
 output <- read.csv(file="output.csv")
 
+str(output)
+str(input)
 # Neural Network Visualization
 library(keras)
 library(mlbench) 
 library(dplyr)
 library(magrittr)
 library(neuralnet)
+output <- log(output)
 
 alpha <- (input[,1]-min(input[,1]))/(max(input[,1])-min(input[,1]))
 wamin <- (input[,2]-min(input[,2]))/(max(input[,2])-min(input[,2]))
 Temp <- (input[,3]-min(input[,3]))/(max(input[,3])-min(input[,3]))
 
+
+
 data <- cbind(alpha, wamin, Temp, output)
-colnames(data) <- c("alpha", "wamin", "Temp", "x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "y1", "y2", "y3", "Pt", "I")
+colnames(data) <- c("alpha", "wamin", "Temp", "x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "y1", "y2", "y3", "Pt")
 
 str(data)
+data$Pt
 
 
 
-dt = sort(sample(nrow(data), nrow(data)*.5))
+dt = sort(sample(nrow(data), nrow(data)*.8))
 train<-data[dt,]
 test<-data[-dt,]
 
 
-
+str(train)
+str(test)
 
 
 #Splitting data into a training, and a validation set
@@ -48,21 +55,19 @@ y.test <- as.matrix(testingtarget)
 model <-keras_model_sequential()%>%
   layer_dense(units = 64, activation = "relu", input_shape =c(3))%>%
   layer_dropout(0.2) %>%
-  layer_dense(units = 64, activation = "relu")%>%
-  layer_dropout(0.2)%>%
   layer_dense(units = 13, activation = "linear")
 
 model%>%
-  compile(optimizer = "ADAM", loss = "mse")
+  compile(optimizer = "ADAM", loss = "mean_absolute_percentage_error")
 
 history <- model%>%
-  fit(x.test, y.test, epochs = 300, batch_size = 150, validation_split = 0.2)
+  fit(x.train, y.train, epochs = 1000, batch_size = 50, validation_split = 0.2)
 
 model %>% evaluate(x.test, y.test)
 pred <- model %>% predict(x.test)
 
-
-
+pred <- exp(pred)
+y.test <- exp(y.test)
 #Finding MSE
 mse1 <- mean((as.vector(pred[,1]) -as.vector(y.test[,1]))^2)
 mse2 <- mean((as.vector(pred[,2]) -as.vector(y.test[,2]))^2)
@@ -79,4 +84,8 @@ mse12 <- mean((as.vector(pred[,12]) -as.vector(y.test[,12]))^2)
 mse13 <- mean((as.vector(pred[,13]) -as.vector(y.test[,13]))^2)
 
 MSE <- cbind(mse1, mse2, mse3, mse4, mse5, mse6, mse7, mse8, mse9, mse10, mse11, mse12, mse13)
+colnames(MSE) <- c("x1 mse", "x2 mse", "x3 mse", "x4 mse", "x5 mse", "x6 mse", "x7 mse", "x8 mse", "x9 mse", "y1 mse", "y2 mse", "y3 mse", "Pt mse")
 MSE
+
+pred[1:20, 13]
+y.test[1:20, 13]
